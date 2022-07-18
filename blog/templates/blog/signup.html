@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load myfilters %}
+{% block title %} Inscription {% endblock %}
+
+{% block content%}
+    <div class="container w-25 mt-5">
+        <p class="text-center fs-3">Inscrivez-vous</p>
+        <form action="{% url 'signup' %}" method="POST">{% csrf_token %}
+            {% for field in form %}
+                {{ field|addclassplaceholder:'form-control mx-0 mb-3'}}
+            {% endfor %}
+            <div class="float-end">
+                <a href="{% url 'login' %}" class="btn btn-outline-secondary">Retour</a>
+                <button class="btn btn-primary" type="submit">S'inscrire</button>
+            </div>
+        </form>
+    </div>
+{% endblock %}

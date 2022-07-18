@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load blog_extras %}
+{% block content %}
+    <h2>Votre flux</h2>
+            <a href="{% url 'create_ticket' %}" >Demander une critique</a>
+            <a href="{% url 'create_ticket_review' %}">Créer une critique</a>
+
+    <div class="grid-container">
+        {% for instance in page_obj %}
+            {% if instance|model_type == 'Blog' %}
+                {% include 'blog/partials/blog_snippet.html' with blog=instance %}
+            {% elif instance|model_type == 'Photo' %}
+                {% include 'blog/partials/photo_snippet.html' with photo=instance %}
+            {% endif %}
+        {% endfor %}
+    </div>
+    {% include 'partials/page_navigator.html' %}
+{% endblock content %}

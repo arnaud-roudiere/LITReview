@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load myfilters %}
+{% block title %} Posts {% endblock %}
+{% block content %}
+    <div class="container w-75 ">
+    <p class="text-center pt-5 fs-5">Vos posts</p>
+        <div class="container w-75 p-5">
+            {% if tickets_and_reviews %}
+                {% for instance in tickets_and_reviews %}
+                    {% if instance|model_type == 'Ticket' %}
+                        {% include 'blog/partials/post_ticket_snippet.html' with ticket=instance %}
+                    {% else %}
+                        {% include 'blog/partials/post_review_snippet.html' with review=instance %}
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+            <p class="text-center fs-3 text-muted">Veuillez remplir un ticket ou effectuer critique pour commencer.</p>
+        {% endif %}
+        </div>
+    </div>
+{% endblock %}

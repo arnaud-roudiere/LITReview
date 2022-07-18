@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %} Créer une critique {% endblock %}
+
+{% block content %}
+    <p class="text-center pt-5 pb-3">Créer une critique</p>
+
+    <div class="container w-75 border mb-5">
+
+        {% include 'blog/partials/create_update_review_content.html' with ticket=ticket %}
+
+        <hr>
+        <div>
+            Critique
+            <form class="my-4 mx-3" action="{% url 'create_review' ticket.id %}" method="post" enctype="multipart/form-data"> {% csrf_token %}
+
+                {% include 'blog/partials/form_review_with_radio_ratings.html' with form=form %}
+
+                <div class="d-flex justify-content-end">
+                <button class="btn btn-light" type="submit">Envoyer</button>
+                    </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

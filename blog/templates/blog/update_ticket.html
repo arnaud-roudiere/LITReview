@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load myfilters %}
+{% block title %} Modifier votre ticket {% endblock %}
+
+{% block content %}
+    <div class="container w-75 ">
+        <p class="text-center pt-5 pb-3">Modifier votre ticket</p>
+        <form action="{% url 'update_ticket' ticket.id %}  " method="post" enctype="multipart/form-data"> {% csrf_token %}
+            {% for field in form %}
+                {{ field.label }}
+                {% if field.name == 'image' %}
+                    {% if ticket.image %}
+                        <div class="mt-1 mb-5">
+                            <img class="" width="200" height="300"
+                                src="{% static 'images/media/' %}{{ ticket.image }}" alt="{{ ticket.title }}"/>
+                        </div>
+                    {% endif %}
+                {% endif %}
+            {{ field|addclass:'form-control mx-0 mb-3 p-1'}}
+            {% endfor %}
+
+            <button class="btn btn-outline-success float-end my-3" type="submit">Envoyer</button>
+        </form>
+    </div>
+{% endblock %}

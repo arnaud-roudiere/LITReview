@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load myfilters %}
+{% block title %} Flux {% endblock %}
+{% block content %}
+    <div class="container w-75 ">
+        <div class="d-flex justify-content-evenly pt-5 pb-2">
+            <a href="{% url 'create_ticket' %}" type="button" class="btn btn-light">Demander une critique</a>
+            <a href="{% url 'create_ticket_review' %}" type="button" class="btn btn-light">Créer une critique</a>
+        </div>
+        <div class="container w-75 p-5">
+            {% if content %}
+                {% for instance in content %}
+                    {% if instance|model_type == 'Ticket' %}
+                        {% include 'blog/partials/post_ticket_snippet.html' with ticket=instance %}
+                    {% else %}
+                        {% include 'blog/partials/post_review_snippet.html' with review=instance %}
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                <p class="text-center fs-3 text-muted">Aucun élément n'est présent dans votre flux.</p>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
