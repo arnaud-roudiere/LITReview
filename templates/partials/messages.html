@@ -1,0 +1,22 @@
+{% if messages %}
+    {% for message in messages %}
+        <div class="container w-75 mt-3 mb-1 pb-0 position-relative">
+          <div class="alert {{ message.tags }} alert-dismissible pb-0" role="alert" >
+            <button type="button" class="btn-close btn-close-black position-absolute top-0 end-0" data-dismiss="alert" aria-label="Close">
+            </button>
+            <p class="text-center mt-1">{{ message }}</p>
+          </div>
+        </div>
+    {% endfor %}
+{% else %}
+    {% if form.errors %}
+    <div class="container w-75">
+        <div class="alert alert-danger" >
+
+           {% for field in form.non_field_errors %}
+               {{field.errors}}
+           {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+{% endif %}

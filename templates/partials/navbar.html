@@ -1,0 +1,17 @@
+<!-- Nav bar -->
+<nav class="position-absolute top-0 end-0">
+    <ul class="nav justify-content-end">
+        <li class="nav-item">
+            <a class="nav-link active text-dark" aria-current="page" href="{% url 'flux' %}">Flux</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" href="{% url 'posts' %}">Posts</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" href="{% url 'follow' %}">Abonnements</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" href="{% url 'logout' %}">Se deconnecter</a>
+        </li>
+    </ul>
+</nav>
