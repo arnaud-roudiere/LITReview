@@ -1,0 +1,26 @@
+{% load static %}
+{% load myfilters %}
+{% include 'partials/modal.html' with content_name=review.headline|del_modal_review_name content_id=review.id content_url='delete_review' extra='supprimer' %}
+
+<div class=" border p-4 mt-4">
+    {% if request.user == review.user %}
+        <p class="fst-italic text-muted">Vous avez publié une critique</p>
+    {% else %}
+        <p class="fst-italic text-muted">{{ review.user }} a publié une critique</p>
+    {% endif %}
+    <p class="float-end">{{ review.time_created|date:"H:i, d F Y" }}</p>
+    <p class="pt-3 fs-5">{{ review.headline }} {{ review.rating|star }}</p>
+    <p>{{ review.body }}</p>
+    <div class="border p-4">
+        <p class="fst-italic text-muted">{% page_name review.ticket.user review.ticket.has_review %}</p>
+        <p class="float-end">{{ review.ticket.time_created|date:"H:i, d F Y" }}</p>
+        <p>{{ review.ticket.title }}</p>
+        <p>{{ review.ticket.description }}</p>
+
+        {% if review.ticket.image %}
+            <img class="" width="200" height="300"
+                 src="/media/{{ review.ticket.image }}" alt="{{ ticket.title }}"/>
+        {% endif %}
+    </div>
+    {% include 'blog/partials/update_delete_buttons.html' with content_id=review.id content_url='update_review' %}
+</div>

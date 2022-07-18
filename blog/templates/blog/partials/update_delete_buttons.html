@@ -1,0 +1,6 @@
+{% if not request.get_full_path == "/flux/" %}
+    <div class="d-flex justify-content-end mt-4">
+        <a href="{% url content_url content_id %}" type="button" class="btn btn-light mx-3">Modifier</a>
+        <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#T{{ content_id }}">Supprimer</button>
+    </div>
+{% endif %}

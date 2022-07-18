@@ -1,0 +1,11 @@
+{% load myfilters %}
+{% for field in form %}
+    {{ field.label }}
+    {% if field.name == 'rating' %}
+        <div class="d-flex justify-content-evenly mb-3">
+            {{field.value|convert_to_radio_btns}}
+        </div>
+    {% else %}
+        {{ field|addclass:'form-control mx-0 mb-3 p-1' }}
+    {% endif %}
+{% endfor %}
