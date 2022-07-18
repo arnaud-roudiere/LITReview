@@ -1,0 +1,21 @@
+{% load static %}
+{% load myfilters %}
+<div class="my-4">
+    <p>Vous êtes en train de poster en réponse à</p>
+    <div class="border p-2 mx-5">
+        <p class="float-end">{{ ticket.time_created|date:"H:i, d F Y" }}</p>
+        <p class="text-muted fst-italic">
+        {% if ticket.user == request.user %}
+             Vous avez demandé une critique
+        {% else %}
+            {{ ticket.user }} a demandé une critique
+        {% endif %}
+        </p>
+        <p>{{ ticket.title }}</p>
+        <p>{{ ticket.description }}</p>
+        {% if ticket.image %}
+            <img class="" width="200" height="300" src="/media/{{ ticket.image }}"
+                 alt="{{ ticket.title }}"/>
+        {% endif %}
+    </div>
+</div>
