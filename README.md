@@ -1,5 +1,5 @@
 # LITReview
-A book/movies reviews and critics app
+A book/movies/articles reviews and critics app
 <br><br>
 
 ## How does it work?
@@ -12,7 +12,7 @@ The app allows you to do the following:
 <br><br>
 ## How to install the app?
 1. Clone the repository
-Enter the following in your Terminal to clone the Github repository: git clone [https://github.com/arnaud-roudiere/LITReview.git](https://github.com/arnaud-roudiere/LITReview.git)
+Enter the following in your Terminal to clone the Github repository: <code class="language-bash" data-lang="bash">git clone [https://github.com/arnaud-roudiere/LITReview.git](https://github.com/arnaud-roudiere/LITReview.git)</code>
 2. Create a virtual environnement
 Create the virtual environnement: <code class="language-bash" data-lang="bash">python -m venv env</code><br>
 3. Activate the virtual environnment 
