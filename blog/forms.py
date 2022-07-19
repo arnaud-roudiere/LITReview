@@ -3,8 +3,10 @@ from django.contrib.auth.models import User
 from django import forms
 from blog.models import Ticket, Review
 
+
 class DeleteBlogForm(forms.Form):
     delete_blog = forms.BooleanField(widget=forms.HiddenInput, initial=True)
+
 
 class SignupForm(UserCreationForm):
     class Meta:

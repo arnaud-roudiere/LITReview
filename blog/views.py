@@ -1,15 +1,11 @@
 from itertools import chain
-from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required, permission_required
-from django.core.paginator import Paginator
-from django.forms import formset_factory
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
 from .forms import SignupForm, TicketForm, ReviewForm
 from . import forms, models
 from django.contrib import messages
 from .models import UserFollows, Ticket, Review
-from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
 from django.conf import settings
 
@@ -54,7 +50,9 @@ def follow_users(request):
         if form.is_valid():
             form.save()
             return redirect('home')
-    return render(request, 'blog/follow_users_form.html', context={'form': form})
+    return render(request, 'blog/follow_users_form.html',
+                  context={'form': form})
+
 
 @login_required
 def create_ticket_and_review_view(request):
@@ -99,30 +97,43 @@ def create_ticket_view(request):
     context = {"form": form}
     return render(request, "blog/create_ticket.html", context=context)
 
+
 @login_required
 def posts_view(request):
     """ Get tickets and reviews for the post page"""
     tickets = Ticket.objects.filter(Q(user=request.user))
-    print('TICKET :',tickets)
+    print('TICKET :', tickets)
     reviews = Review.objects.filter(Q(user=request.user))
-    print('REVIEWS :',reviews)
-    tickets_and_reviews = sorted(chain(tickets, reviews), key=lambda obj: obj.time_created, reverse=True)
+    print('REVIEWS :', reviews)
+    tickets_and_reviews = sorted(chain(tickets, reviews),
+                                 key=lambda obj: obj.time_created,
+                                 reverse=True)
 
-    return render(request, "blog/posts.html", context={"tickets_and_reviews": tickets_and_reviews})
+    return render(request, "blog/posts.html",
+                  context={"tickets_and_reviews": tickets_and_reviews})
 
 
 @login_required
 def flux(request):
-    """ Main page - The tickets and reviews of the user itself and user the user follows """
+    """ Main page - The tickets and reviews
+    of the user itself and user the user follows """
     users_followers = UserFollows.objects.filter(user=request.user)
     users = []
     for user in users_followers:
         users.append(user.followed_user)
-    tickets = Ticket.objects.filter(Q(has_review=False) & (Q(user=request.user) | Q(user__in=users)))
-    reviews = Review.objects.filter(Q(user=request.user) | Q(user__in=users))
+    tickets = Ticket.objects.filter(Q(has_review=False)
+                                    & (Q(user=request.user)
+                                       | Q(user__in=users)))
+    reviews = Review.objects.filter(Q(user=request.user)
+                                    | Q(user__in=users))
 
-    tickets_and_reviews = sorted(chain(tickets, reviews), key=lambda obj: obj.time_created, reverse=True)
-    return render(request, "blog/flux.html", context={"content": tickets_and_reviews})
+    tickets_and_reviews = sorted(chain(tickets,
+                                       reviews),
+                                 key=lambda obj: obj.time_created,
+                                 reverse=True)
+    return render(request, "blog/flux.html",
+                  context={"content": tickets_and_reviews})
+
 
 @login_required
 def follow_users_view(request):
@@ -130,24 +141,29 @@ def follow_users_view(request):
     following_users = UserFollows.objects.filter(user=request.user.id)
     users_followers = UserFollows.objects.filter(followed_user=request.user.id)
     if request.POST:
-        user = User.objects.get(username=request.POST["following"])
+        if 'following' in request.POST:
+            user = User.objects.filter(
+                username=request.POST["following"]).first()
+            if str(request.user) == request.POST["following"]:
+                messages.error(request, "Vous ne pouvez pas suivre vous même")
+                return redirect("follow")
 
-        if str(request.user) == request.POST["following"]:
-            messages.error(request, "Vous ne pouvez pas suivre vous même")
+            try:
+                form = UserFollows()
+                form.user = request.user
+                form.followed_user = user
+                form.save()
+                messages.success(
+                    request, f"Vous avez bien ajouté "
+                             f"{request.POST['following']} à votre liste.",
+                )
+            except:
+                if user is None:
+                    messages.error(request, "Cet utilisateur n'existe pas.")
+                else:
+                    messages.error(request, f"Vous suivez déjà {user}")
+
             return redirect("follow")
-
-        try:
-            form = UserFollows()
-            form.user = request.user
-            form.followed_user = user
-            form.save()
-            messages.success(
-                request, f"Vous avez bien ajouté {request.POST['following']} à votre liste.",
-            )
-        except IntegrityError:
-            messages.error(request, f"Vous suivez déjà {user}")
-
-        return redirect("follow")
 
     context = {"following": following_users, "followers": users_followers}
     return render(request, "blog/follow.html", context=context)
@@ -157,9 +173,11 @@ def follow_users_view(request):
 def remove_following_user_view(request, id):
     """ Remove a follower """
     user = get_object_or_404(User, id=id)
-    remove_user = UserFollows.objects.get(user=request.user.id, followed_user=user)
+    remove_user = UserFollows.objects.get(
+        user=request.user.id, followed_user=user)
     remove_user.delete()
     return redirect("follow")
+
 
 @login_required
 def create_review(request, ticket_id):
@@ -191,7 +209,8 @@ def delete_ticket(request, ticket_id):
     """ Delete user ticket """
     ticket = get_object_or_404(Ticket, id=ticket_id)
     ticket.delete()
-    messages.success(request, f"Votre ticket {ticket.title} est bien supprimé.")
+    messages.success(request,
+                     f"Votre ticket {ticket.title} est bien supprimé.")
     return redirect("posts")
 
 
@@ -203,7 +222,9 @@ def delete_review(request, review_id):
     ticket.has_review = False
     ticket.save()
     review.delete()
-    messages.success(request, f"Votre critique '{review.headline}' a bien été supprimée.")
+    messages.success(request,
+                     f"Votre critique '{review.headline}'"
+                     f" a bien été supprimée.")
     return redirect("posts")
 
 
@@ -241,6 +262,7 @@ def update_ticket(request, id):
     context["ticket"] = ticket
 
     return render(request, "blog/update_ticket.html", context=context)
+
 
 def signup_view(request):
     """ Create user account """

@@ -7,7 +7,8 @@ class Ticket(models.Model):
     # Your Ticket model definition goes here
     title = models.CharField(max_length=128, verbose_name="Titre")
     description = models.TextField(max_length=2048, blank=True)
-    user = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(to=settings.AUTH_USER_MODEL,
+                             on_delete=models.CASCADE)
     image = models.ImageField(null=True, blank=True)
     time_created = models.DateTimeField(auto_now=True)
     has_review = models.BooleanField(default=False)
@@ -24,16 +25,21 @@ class Review(models.Model):
         verbose_name="Note",
     )
     headline = models.CharField(max_length=128, verbose_name="Titre")
-    body = models.TextField(max_length=8192, blank=True, verbose_name="Commentaire")
-    user = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    body = models.TextField(max_length=8192, blank=True,
+                            verbose_name="Commentaire")
+    user = models.ForeignKey(to=settings.AUTH_USER_MODEL,
+                             on_delete=models.CASCADE)
     time_created = models.DateTimeField(auto_now=True)
 
 
 class UserFollows(models.Model):
     # Your UserFollows model definition goes here
-    user = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="following")
+    user = models.ForeignKey(to=settings.AUTH_USER_MODEL,
+                             on_delete=models.CASCADE,
+                             related_name="following")
     followed_user = models.ForeignKey(
-        to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="followed_by",
+        to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE,
+        related_name="followed_by",
     )
 
     class Meta:
