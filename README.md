@@ -19,6 +19,8 @@ Create the virtual environnement: <code class="language-bash" data-lang="bash">p
 You need to activate the "active.bat" file in Windows : <code class="language-bash" data-lang="bash">env\Scripts\activate.bat</code><br> (for Mac it's <code class="language-bash" data-lang="bash">source env/bin/activate</code> )
 4. Install the requirements
 Install the packages with: <code class="language-bash" data-lang="bash">pip install -r requirements.txt</code><br>
-5. Launch the app
-Type the next code : <code class="language-bash" data-lang="bash">py manage.py runserver</code><br>
+5. Migrate the tables to the database
+Type the following code : <code class="language-bash" data-lang="bash">python manage.py migrate</code><br>
+6. Launch the app
+Type the next code : <code class="language-bash" data-lang="bash">python manage.py runserver</code><br>
 By default it opens the port 8000.
