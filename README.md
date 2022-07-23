@@ -21,3 +21,4 @@ You need to activate the "active.bat" file in Windows : <code class="language-ba
 Install the packages with: <code class="language-bash" data-lang="bash">pip install -r requirements.txt</code><br>
 5. Launch the app
 Type the next code : <code class="language-bash" data-lang="bash">py manage.py runserver</code><br>
+By default it opens the port 8000.
