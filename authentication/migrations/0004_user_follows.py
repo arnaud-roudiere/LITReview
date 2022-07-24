@@ -14,6 +14,9 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='user',
             name='follows',
-            field=models.ManyToManyField(limit_choices_to={'role': 'CREATOR'}, to=settings.AUTH_USER_MODEL),
+            field=models.ManyToManyField(
+                limit_choices_to={
+                    'role': 'CREATOR'},
+                to=settings.AUTH_USER_MODEL),
         ),
     ]

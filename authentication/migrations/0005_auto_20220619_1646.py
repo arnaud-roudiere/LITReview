@@ -14,16 +14,23 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='user',
             name='follows',
-            field=models.ManyToManyField(limit_choices_to={'role': 'CREATOR'}, to=settings.AUTH_USER_MODEL, verbose_name='suit'),
+            field=models.ManyToManyField(
+                limit_choices_to={'role': 'CREATOR'},
+                to=settings.AUTH_USER_MODEL,
+                verbose_name='suit'),
         ),
         migrations.AlterField(
             model_name='user',
             name='profile_photo',
-            field=models.ImageField(upload_to='', verbose_name='photo de profil'),
+            field=models.ImageField(upload_to='',
+                                    verbose_name='photo de profil'),
         ),
         migrations.AlterField(
             model_name='user',
             name='role',
-            field=models.CharField(choices=[('CREATOR', 'Créateur'), ('SUBSCRIBER', 'Abonné')], max_length=30, verbose_name='rôle'),
+            field=models.CharField(choices=[('CREATOR',
+                                             'Créateur'),
+                                            ('SUBSCRIBER', 'Abonné')],
+                                   max_length=30, verbose_name='rôle'),
         ),
     ]
