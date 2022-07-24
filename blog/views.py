@@ -1,5 +1,5 @@
 from itertools import chain
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
 from .forms import SignupForm, TicketForm, ReviewForm
@@ -175,6 +175,7 @@ def create_review(request, ticket_id):
 
 
 @login_required
+@permission_required('blog.delete_blog')
 def delete_ticket(request, ticket_id):
     """ Delete user ticket """
     ticket = get_object_or_404(Ticket, id=ticket_id)
@@ -185,6 +186,7 @@ def delete_ticket(request, ticket_id):
 
 
 @login_required
+@permission_required('blog.delete_blog')
 def delete_review(request, review_id):
     """ Delete user review """
     review = get_object_or_404(Review, id=review_id)
@@ -199,6 +201,7 @@ def delete_review(request, review_id):
 
 
 @login_required
+@permission_required('blog.change_blog')
 def update_review(request, review_id):
     """ Update a user review"""
     context = {}
@@ -213,10 +216,11 @@ def update_review(request, review_id):
 
     context["review"] = review
 
-    return render(request, "app/update_review.html", context=context)
+    return render(request, "blog/update_review.html", context=context)
 
 
 @login_required
+@permission_required('blog.change_blog')
 def update_ticket(request, id):
     """ Update a user ticket """
     context = {}
