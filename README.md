@@ -11,7 +11,7 @@ The app allows you to do the following:
 - login and logout
 <br><br>
 
-## Webpages breakdown
+## How is composed the app?
 The app is composed by following pages:
 - Login : allows to sign up or register
 - Flux/Home : this main page shows the tickets and reviews create by us and also the ones created by the user(s) we follow, allow to create a ticket or a review with and without any previous request from a followed user
