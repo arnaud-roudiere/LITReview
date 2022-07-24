@@ -10,6 +10,15 @@ The app allows you to do the following:
 - follow other users
 - login and logout
 <br><br>
+
+## Webpages breakdown
+The app is composed by following pages:
+- Login : allows to sign up or register
+- Flux/Home : this main page shows the tickets and reviews create by us and also the ones created by the user(s) we follow, allow to create a ticket or a review with and without any previous request from a followed user
+- Post : allows to edit or delete our tickets and reviews
+- Follow : allows to follow users or unfollow them, shows us the user following us as well
+<br><br>
+
 ## How to install the app?
 1. Clone the repository
 Enter the following in your Terminal to clone the Github repository: <code class="language-bash" data-lang="bash">git clone [https://github.com/arnaud-roudiere/LITReview.git](https://github.com/arnaud-roudiere/LITReview.git)</code>
