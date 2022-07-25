@@ -1,5 +1,5 @@
 from itertools import chain
-from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
 from .forms import SignupForm, TicketForm, ReviewForm
@@ -175,44 +175,55 @@ def create_review(request, ticket_id):
 
 
 @login_required
-@permission_required('blog.delete_blog')
 def delete_ticket(request, ticket_id):
     """ Delete user ticket """
     ticket = get_object_or_404(Ticket, id=ticket_id)
-    ticket.delete()
-    messages.success(request,
-                     f"Votre ticket {ticket.title} est bien supprimé.")
-    return redirect("posts")
-
+    request_user = request.user
+    ticket_user = ticket.user
+    if request_user == ticket_user:
+        ticket.delete()
+        messages.success(request,
+                         f"Votre ticket {ticket.title} est bien supprimé.")
+        return redirect("posts")
+    else:
+        return redirect("flux")
 
 @login_required
-@permission_required('blog.delete_blog')
 def delete_review(request, review_id):
     """ Delete user review """
     review = get_object_or_404(Review, id=review_id)
     ticket = get_object_or_404(Ticket, id=review.ticket.id)
     ticket.has_review = False
-    ticket.save()
-    review.delete()
-    messages.success(request,
-                     f"Votre critique '{review.headline}'"
-                     f" a bien été supprimée.")
-    return redirect("posts")
+    request_user = request.user
+    review_user = review.user
+    if request_user == review_user:
+        ticket.save()
+        review.delete()
+        messages.success(request,
+                         f"Votre critique '{review.headline}'"
+                         f" a bien été supprimée.")
+        return redirect("posts")
+    else:
+        return redirect("flux")
 
 
 @login_required
-@permission_required('blog.change_blog')
 def update_review(request, review_id):
     """ Update a user review"""
     context = {}
     review = get_object_or_404(Review, id=review_id)
     context["form"] = ReviewForm(instance=review)
-    if request.method == "POST":
-        update_form = ReviewForm(request.POST, instance=review)
-        if update_form.is_valid():
-            update_form.save()
-            messages.success(request, "Votre ticket a été modifié.")
-            return redirect("posts")
+    request_user = request.user
+    review_user = review.user
+    if request_user == review_user:
+        if request.method == "POST":
+            update_form = ReviewForm(request.POST, instance=review)
+            if update_form.is_valid():
+                update_form.save()
+                messages.success(request, "Votre ticket a été modifié.")
+                return redirect("posts")
+    else:
+        return redirect("flux")
 
     context["review"] = review
 
@@ -220,22 +231,27 @@ def update_review(request, review_id):
 
 
 @login_required
-@permission_required('blog.change_blog')
 def update_ticket(request, id):
     """ Update a user ticket """
     context = {}
     ticket = get_object_or_404(Ticket, id=int(id))
     context["form"] = TicketForm(instance=ticket)
-    if request.method == "POST":
-        update_form = TicketForm(request.POST, request.FILES, instance=ticket)
-        if update_form.is_valid():
-            update_form.save()
-            messages.success(request, "Votre ticket a été modifié.")
-            return redirect("posts")
+    request_user = request.user
+    ticket_user = ticket.user
+    if request_user == ticket_user:
 
-    context["ticket"] = ticket
+        if request.method == "POST":
+            update_form = TicketForm(request.POST, request.FILES, instance=ticket)
+            if update_form.is_valid():
+                update_form.save()
+                messages.success(request, "Votre ticket a été modifié.")
+                return redirect("posts")
 
-    return render(request, "blog/update_ticket.html", context=context)
+        context["ticket"] = ticket
+
+        return render(request, "blog/update_ticket.html", context=context)
+    else:
+        return redirect("flux")
 
 
 def signup_view(request):
